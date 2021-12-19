@@ -4,7 +4,6 @@ import Component from '../../../core/Component.js';
 export default class CrewTable extends Component {
   template() {
     const { data } = this.$props;
-
     return `
       <h3>${COURSE_TYPE[this.$props.type]} 크루 목록</h3>
       <table id=${ID.CREW_TABLE} border="1">
@@ -23,16 +22,15 @@ export default class CrewTable extends Component {
   }
 
   getCrewTableRow(data) {
-    console.log(data);
     return `
       ${data
         .map(
           (name, index) => `
             <tr>
-              <td id="crew-index">${index + 1}</td>
-              <td id="crew-name">${name}</td>
+              <td >${index + 1}</td>
+              <td data-crew-name="${name}">${name}</td>
               <td>
-                <button class="${ID.DELETE_CREW_BUTTON}">삭제</button>
+                <button data-seq="${index}" class="${ID.DELETE_CREW_BUTTON}">삭제</button>
               </td>
             </tr>`
         )
@@ -42,9 +40,9 @@ export default class CrewTable extends Component {
 
   setEvent() {
     const { type, deleteCrew } = this.$props;
+
     this.addEvent('click', `.${ID.DELETE_CREW_BUTTON}`, ({ target }) => {
-      const $name = this.$target.querySelector('#crew-name');
-      deleteCrew(type, $name.text);
+      deleteCrew(type, target.closest('[data-seq]').dataset.seq);
     });
   }
 }

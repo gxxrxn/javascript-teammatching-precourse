@@ -14,12 +14,17 @@ export default class CrewTab extends Component {
     const { data, setCourse, addCrew, deleteCrew } = this.$props;
     const $courseForm = this.$target.querySelector('[data-component="course-form"]');
     const $crewAddForm = this.$target.querySelector('[data-component="crew-add-form"]');
+    const type = this.getCourseType(data);
 
     new CourseForm($courseForm, { data, setCourse });
-    if (data['crew_course'].frontend == 'checked') {
-      new CrewAddForm($crewAddForm, { type: 'frontend', data, addCrew, deleteCrew });
-    } else if (data['crew_course'].backend == 'checked') {
-      new CrewAddForm($crewAddForm, { type: 'backend', data, addCrew, deleteCrew });
+    if (type) {
+      new CrewAddForm($crewAddForm, { type, data, addCrew, deleteCrew });
     }
+  }
+
+  getCourseType(data) {
+    if (data.crewCourse.frontend === 'checked') return 'frontend';
+    else if (data.crewCourse.backend === 'checked') return 'backend';
+    return '';
   }
 }

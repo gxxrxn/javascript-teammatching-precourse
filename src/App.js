@@ -14,9 +14,11 @@ export default class App extends Component {
       curTab: ID.CREW_TAB,
       tabItems: TAB_MENU.map(({ id, title }, index) => ({ seq: index, id, title })),
       data: {
-        crew_course: { frontend: '', backend: '' },
-        frontend: ['준', '요'],
-        backend: ['하'],
+        crewCourse: { frontend: '', backend: '' },
+        crewList: {
+          frontend: [],
+          backend: [],
+        },
       },
     };
   }
@@ -62,38 +64,25 @@ export default class App extends Component {
     this.setState({
       data: {
         ...data,
-        crew_course: course,
+        crewCourse: course,
       },
     });
   }
 
   addCrew(courseType, name) {
     const { data } = this.$state;
-
-    if (courseType === 'frontend') {
-      this.setState({ data: { ...data, frontend: [...data.frontend, name] } });
-    } else if (courseType === 'backend') {
-      this.setState({ data: { ...data, backend: [...data.backend, name] } });
-    }
+    const crewList = { ...data.crewList };
+    crewList[courseType] = [...crewList[courseType], name];
+    this.setState({ data: { ...data, crewList } });
   }
 
-  deleteCrew(courseType, name) {
+  deleteCrew(courseType, seq) {
     const { data } = this.$state;
-    let crews = [];
-
-    if (courseType === 'frontend') {
-      crews = [...this.$state.data.frontend];
-      crews.splice(
-        crews.findIndex(v => v === name),
-        1
-      );
-      this.setState({
-        data: { ...data, frontend: crews },
-      });
-    } else if (courseType === 'backend') {
-      crews = [...this.$state.data.backend];
-      crews.splice(crews.findIndex(v => v === name));
-      this.setState({ data: { ...data, backend: crews } });
-    }
+    const crewList = { ...data.crewList };
+    crewList[courseType].splice(
+      crewList[courseType].findIndex((v, idx) => idx == seq),
+      1
+    );
+    this.setState({ data: { ...data, crewList } });
   }
 }

@@ -4,7 +4,7 @@ import Component from '../../../core/Component.js';
 
 export default class CourseForm extends Component {
   template() {
-    const { frontend, backend } = this.$props.data['crew_course'];
+    const { frontend, backend } = this.$props.data.crewCourse;
 
     return `
       <h3>크루를 관리할 코스를 선택해주세요</h3>
@@ -19,7 +19,7 @@ export default class CourseForm extends Component {
 
   setEvent() {
     const { setCourse } = this.$props;
-    const { target } = this;
+
     this.addEvent('click', `#${ID.FE_RADIO_INPUT}`, () => {
       setCourse({ frontend: 'checked', backend: '' });
     });
